@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 17, 2021 at 01:28 PM
+-- Generation Time: Aug 21, 2021 at 10:04 AM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.3.27
 
@@ -78,15 +78,17 @@ CREATE TABLE `product` (
   `color` varchar(350) COLLATE utf8mb4_bin NOT NULL,
   `discount` int(11) NOT NULL,
   `Model` varchar(350) COLLATE utf8mb4_bin NOT NULL,
-  `stock` varchar(350) COLLATE utf8mb4_bin NOT NULL
+  `stock` varchar(350) COLLATE utf8mb4_bin NOT NULL,
+  `filename` varchar(250) COLLATE utf8mb4_bin DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`owner`, `pro_name`, `price`, `brand`, `description`, `year`, `color`, `discount`, `Model`, `stock`) VALUES
-(5, 'Puzzle', 360, 'xyz', 'Miss & Chief High Speed Stickerless 3x3 Magic Cube Puzzle Game Toy · A R ENTERPRISES High Speed Stickerless 4x4 Magic Cube Puzzle Game Toy ·', 2, 'red', 0, '12se', 'Available');
+INSERT INTO `product` (`owner`, `pro_name`, `price`, `brand`, `description`, `year`, `color`, `discount`, `Model`, `stock`, `filename`) VALUES
+(2, 'Barbie', 500, 'xyz', 'Barbie is a fashion doll manufactured by the American toy company Mattel, Inc. and launched in March 1959. ', 2, 'pink', 0, '134ER4', 'Available', 'images/barbie.jpg'),
+(2, 'Puzzle', 100, 'xyz', 'Miss & Chief High Speed Stickerless 3x3 Magic Cube Puzzle Game Toy · A R ENTERPRISES High Speed Stickerless 4x4 Magic Cube Puzzle Game Toy ·', 5, 'red', 65, '134ER4', 'Available', 'images/puzzle.jpg');
 
 -- --------------------------------------------------------
 
@@ -108,7 +110,7 @@ CREATE TABLE `toyowner` (
 
 INSERT INTO `toyowner` (`id`, `name`, `city`, `username`, `password`) VALUES
 (1, 'Shantabai', 'Jalgaon', 'Shanta@123', '123'),
-(2, 'Kajolbai', 'Satara', 'kaju', 'kaju1234'),
+(2, 'Kajol Pawar', 'Satara', 'kaju', 'kaju1234'),
 (3, 'Ramlal gopal', 'Nagpur', 'ramlal', '1234'),
 (4, 'jamunabai kumbhar', 'Nagpiur', 'jamuna', 'jamun123'),
 (5, 'divya varpe', 'bhosari', 'divya123', '1234'),

@@ -1,6 +1,7 @@
 
-.bgcolor{
-	background-color:#FFA500;
+*{
+	padding: 0;
+	margin:0;
 }
 .box{
 font-weight:bold;
@@ -16,9 +17,10 @@ color:#FFA500;
 }
 .box1 span{
 font-size:30px;
-color:#000;
+color:white;
 text-align: center;
 }
+
 .footer{
 background-color:#FFA500;
 font-size:17px;
@@ -26,7 +28,4 @@ padding:20px;
 height:15%;
 color:white;
 font-weight:bold;
-}
-body{
-	background-color:black;
 }
