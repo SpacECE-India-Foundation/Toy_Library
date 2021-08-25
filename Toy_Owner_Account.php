@@ -48,7 +48,6 @@
 	position: fixed;
 	z-index: 101;
 }
-
 	</style>
 	</head>
 	<body>
@@ -85,6 +84,9 @@
 				?>
 		</div></div>
 		<br><br><div class="offset-sm-2 col-sm-6  text-center">
+		<div class="col-10">
+      		<!--<h2>Product List</h2>-->
+      	</div>
 			<br><br>
 			<table class="table table-striped table-hover">
 				<thead>
@@ -115,7 +117,7 @@
 						while($row2=mysqli_fetch_assoc($res2))
 						{
 							echo "<tr><td scope='row'>".$row2['pro_name']."</td><td><img src=".$row2['filename']." height='100px' width='100px'></td><td>".$row2['price']."</td><td>".$row2['brand']."</td><td colspan='6'>".$row2['description']."</td><td>".$row2['year']."</td><td>".$row2['color']."</td><td>".$row2['discount']."</td><td>".$row2['Model']."</td><td>".$row2['stock']."</td>
-							<td><form><input type='hidden' name='owner_id' value=".$row2["owner"]."><input type='hidden' name='proname' value=".$row2["pro_name"]."><button type='submit' class='btn btn-danger' name='btn_delete' onclick='this.disabled=true;this.value='Sending, please wait...';this.form.submit();'>Delete</button></form></td></tr>";
+							<td><form><input type='hidden' name='owner_id' value=".$row2["owner"]."><input type='hidden' name='proname' value=".$row2["pro_name"]."><button type='submit' class='btn btn-danger' name='btn_delete'><i class='fas fa-trash-alt'></i></button><br><br><button type='submit' class='btn btn-primary' name='btn_edit'><i class='fas fa-edit'></i></button></i></button></form></td></tr>";
 						}
 						
 
@@ -143,58 +145,183 @@
 			$res=mysqli_query($con,$s);
 			if($res)
 			{
-				echo '<script>alert("Delete Successfully..!!!");</script>';
+				echo '<script>alert("Delete Successfully..!!!");window.location="Toy_Owner_Account.php";</script>';
 			}
 			else
 				echo '<script>alert("Delete Failed..!!!");</script>';
 		
 	}
-	if(isset($_REQUEST['btn_my']))
+	if(isset($_REQUEST['btn_edit']))
 	{	
-		$id=$_REQUEST['getid'];
-		echo '<form class="text-white"><div class="offset-sm-2 col-sm-8 box4">
-		    <div class="form-group">
-			<input type="hidden" name="getme" value='.$id.'>
-			Name: <input type="textbox" name="getna" class="form-control " style="border:1px solid #000">
-			City: <input type="textbox" name="getcity" class="form-control" style="border:1px solid #000">
-			Product: <input type="textbox" name="getproduct" class="form-control" style="border:1px solid #000">
-			Price: <input type="textbox" name="getprice" class="form-control" style="border:1px solid #000"><br>
-			<button type="submit" class="btn btn-primary" name="but">Submit</button>
-		        </div></div></form>';
+		
+		echo '<div class=" offset-sm-2 col-sm-8 box4" id="add_product"><form class="" method="POST" enctype="multipart/form-data" ><div class="form-group">
+		   
+			<label for="show" class="close-btn fas fa-times"></label>
+			Product: <input type="textbox" name="productna" class="form-control">
+			Price: <input type="textbox" name="price" class="form-control">
+			Brand: <input type="textbox" name="getbrand" class="form-control">
+			Description: <input type="textbox" name="description" class="form-control" >
+			
+			Year: <input type="textbox" name="getyear" class="form-control">
+			color: <input type="textbox" name="getcolor" class="form-control">
+			Discount: <input type="textbox" name="discount" class="form-control">
+			Model: <input type="textbox" name="model" class="form-control">
+			Stock: <input type="textbox" name="stock" class="form-control"><br>
+			<input type="file"  name="uploadfile" value="" /><br><br>
+			<button type="submit" class="btn btn-primary" name="but_edit_pro">Submit</button>
+		        </div></form></div>';
+			echo "<script> document.querySelector('.close-btn').addEventListener('click',()=>{
+				document.querySelector('.box4').style.display='none';
+			});
+				</script>";	
 		
 	}
-	if(isset($_REQUEST['but']))
+	if(isset($_REQUEST['but_edit_pro']))
 	{	
-		$id=$_REQUEST['getme'];
-		$name1=$_REQUEST['getna'];
-		$city1=$_REQUEST['getcity'];
-		$product1=$_REQUEST['getproduct'];
-		$price1=$_REQUEST['getprice'];
-		if($name1!="" && $city1!="" && $product1!="" && $price1)
+		$id=$_REQUEST['owner_id'];
+		$proname=$_REQUEST['proname'];
+		$productna=$_REQUEST['productna'];
+		$price=$_REQUEST['price'];
+		$getbrand=$_REQUEST['getbrand'];
+		$description=$_REQUEST['description'];
+		$getyear=$_REQUEST['getyear'];
+		$getcolor=$_REQUEST['getcolor'];
+		$discount=$_REQUEST['discount'];
+		$model=$_REQUEST['model'];
+		$stock=$_REQUEST['stock'];
+		$filename = $_FILES["uploadfile"]["name"];
+    	$tempname = $_FILES["uploadfile"]["tmp_name"];    
+        $folder = "images/".$filename;
+		$con=mysqli_connect("localhost","root","","toylibrary");
+		if($productna!="") 
 		{
-			$con=mysqli_connect("localhost","root","","toylibrary");
-			$s="UPDATE kfarm set name='$name1',city='$city1',product='$product1',price='$price1' where id='$id'";
+			
+			$s="UPDATE product set pro_name='$productna'where owner='$id'AND pro_name='$proname'";
 			$res=mysqli_query($con,$s);
 			if($res)
 			{
-				echo '<script>alert("Update Successfully..!!!");</script>';
-				header("location: farmerInfo.php");
+				echo '<script>alert("Product Name Updated Successfully");window.location="Toy_Owner_Account.php";</script>';
+				
 			}
 			else
 				echo '<script>alert("Update Failed..!!!");</script>';
 		}
-		else
+		if($price!="")
 		{
-			echo '<script>alert("All fields are required");</script>';
+			$s="UPDATE product set price='$price' where owner='$id'AND pro_name='$proname'";
+			$res=mysqli_query($con,$s);
+			if($res)
+			{
+				echo '<script>alert("Price Updated Successfully");window.location="Toy_Owner_Account.php";</script>';
+				
+			}
+			else
+				echo '<script>alert("Update Failed..!!!");</script>';
 		}
+		if($getbrand!="")
+		{
+			$s="UPDATE product set brand='$getbrand' where owner='$id'AND pro_name='$proname'";
+			$res=mysqli_query($con,$s);
+			if($res)
+			{
+				echo '<script>alert("Brand Updated Successfully");window.location="Toy_Owner_Account.php";</script>';
+				
+			}
+			else
+				echo '<script>alert("Update Failed..!!!");</script>';
+		}
+		if($description!="")
+		{
+			$s="UPDATE product set description='$description' where owner='$id'AND pro_name='$proname'";
+			$res=mysqli_query($con,$s);
+			if($res)
+			{
+				echo '<script>alert("Description Updated Successfully");window.location="Toy_Owner_Account.php";</script>';
+				
+			}
+			else
+				echo '<script>alert("Update Failed..!!!");</script>';
+		}
+		if($getyear!="")
+		{
+			$s="UPDATE product set year='$getyear' where owner='$id'AND pro_name='$proname'";
+			$res=mysqli_query($con,$s);
+			if($res)
+			{
+				echo '<script>alert("Year Updated Successfully");window.location="Toy_Owner_Account.php";</script>';
+				
+			}
+			else
+				echo '<script>alert("Update Failed..!!!");</script>';
+		}
+		if($getcolor!="")
+		{
+			$s="UPDATE product set color='$getcolor' where owner='$id'AND pro_name='$proname'";
+			$res=mysqli_query($con,$s);
+			if($res)
+			{
+				echo '<script>alert("Color Updated Successfully");window.location="Toy_Owner_Account.php";</script>';
+				
+			}
+			else
+				echo '<script>alert("Update Failed..!!!");</script>';
+		}
+		if($discount!="")
+		{
+			$s="UPDATE product set discount='$discount' where owner='$id'AND pro_name='$proname'";
+			$res=mysqli_query($con,$s);
+			if($res)
+			{
+				echo '<script>alert("Discount Updated Successfully");window.location="Toy_Owner_Account.php";</script>';
+				
+			}
+			else
+				echo '<script>alert("Update Failed..!!!");</script>';
+		}
+		if($model!="")
+		{
+			$s="UPDATE product set Model='$model' where owner='$id'AND pro_name='$proname'";
+			$res=mysqli_query($con,$s);
+			if($res)
+			{
+				echo '<script>alert("Model Updated Successfully");window.location="Toy_Owner_Account.php";</script>';
+				
+			}
+			else
+				echo '<script>alert("Update Failed..!!!");</script>';
+		}
+		if($stock!="")
+		{
+			$s="UPDATE product set stock='$stock' where owner='$id'AND pro_name='$proname'";
+			$res=mysqli_query($con,$s);
+			if($res)
+			{
+				echo '<script>alert("Stock Updated Successfully");window.location="Toy_Owner_Account.php";</script>';
+				
+			}
+			else
+				echo '<script>alert("Update Failed..!!!");</script>';
+		}
+		if($filename!="")
+		{
+			$s="UPDATE product set filename='$folder' where owner='$id'AND pro_name='$proname'";
+			$res=mysqli_query($con,$s);
+			if($res)
+			{
+				echo '<script>alert("Image Updated Successfully");window.location="Toy_Owner_Account.php";</script>';
+				
+			}
+			else
+				echo '<script>alert("Update Failed..!!!");</script>';
+		}
+		
 	}
-
 	if(isset($_REQUEST['btn_add']))
 	{	
 		$id=$_REQUEST['getid'];
 		echo '<div class=" offset-sm-2 col-sm-8 box4" id="add_product"><form class="" method="POST" enctype="multipart/form-data" ><div class="form-group">
-		   <!--<i class="far fa-times-circle fa-2x" id="close"></i>-->
-			<label for="show" class="close-btn fas fa-times"></label>
+		  
+		   <label for="show" class="close-btn fas fa-times"></label>
 		  <input type="hidden" name="getmyid" value='.$id.'>
 			Product: <input type="textbox" name="productna" class="form-control">
 			Price: <input type="textbox" name="price" class="form-control">
@@ -209,7 +336,10 @@
 			<input type="file"  name="uploadfile" value="" /><br><br>
 			<button type="submit" class="btn btn-primary" name="but_add">Submit</button>
 		        </div></form></div>';
-		
+				echo "<script> document.querySelector('.close-btn').addEventListener('click',()=>{
+					document.querySelector('.box4').style.display='none';
+				});
+					</script>";
 	}
 	if(isset($_POST['but_add']))
 	{	
@@ -239,7 +369,7 @@
 				}else{
 					$msg = "Failed to upload image";
 				}
-				echo '<script>alert("Product Added Successfully..!!!");</script>';
+				echo '<script>alert("Product Added Successfully..!!!");window.location="Toy_Owner_Account.php";</script>';
 			}
 			else
 				echo '<script>alert("Failed..!!!");</script>';
